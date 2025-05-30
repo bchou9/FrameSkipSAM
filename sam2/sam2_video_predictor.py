@@ -654,6 +654,7 @@ class SAM2VideoPredictor(SAM2Base):
                             prev_frame, curr_frame, threshold=self.skip_threshold
                         ):
                             # Warp last mask and upsample
+                            print(f"Skipping frame {frame_idx} (reuse frame {prev_frame_idx}), skip threshold {self.skip_threshold}")
                             warped_pred = warp_mask_forward(
                                 prev_pred_masks.cpu(),
                                 prev_frame.cpu().numpy(),
