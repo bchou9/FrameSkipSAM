@@ -9,14 +9,29 @@ from collections import OrderedDict
 
 import torch
 import torch.nn.functional as F
-import numpy as np
+
 from tqdm import tqdm
 
 from sam2.modeling.sam2_base import NO_OBJ_SCORE, SAM2Base
 from sam2.utils.misc import concat_points, fill_holes_in_mask_scores, load_video_frames
-from sam2.utils.change_detection import should_skip_frame
-from sam2.utils.optical_flow import warp_mask_forward
+
+# MGFK Helpers
 import cv2
+import numpy as np
+import time
+
+def _mean_abs_diff(img1: torch.Tensor, img2: torch.Tensor) -> float:
+    """
+    Compute mean absolute pixel difference on two HWC images in uint8 range [0,255].
+    Inputs are 3-D CPU tensors (H,W,C) with dtype uint8.
+    """
+    # convert to NumPy for speed
+    a = img1.cpu().numpy().astype(np.int16)
+    b = img2.cpu().numpy().astype(np.int16)
+    return float(np.mean(np.abs(a - b)))
+
+
+
 
 class SAM2VideoPredictor(SAM2Base):
     """The predictor class to handle user interactions and manage inference states."""
@@ -32,6 +47,7 @@ class SAM2VideoPredictor(SAM2Base):
         # if `add_all_frames_to_correct_as_cond` is True, we also append to the conditioning frame list any frame that receives a later correction click
         # if `add_all_frames_to_correct_as_cond` is False, we conditioning frame list to only use those initial conditioning frames
         add_all_frames_to_correct_as_cond=False,
+        skip_mad_threshold: float = 0.05,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -39,6 +55,7 @@ class SAM2VideoPredictor(SAM2Base):
         self.non_overlap_masks = non_overlap_masks
         self.clear_non_cond_mem_around_input = clear_non_cond_mem_around_input
         self.add_all_frames_to_correct_as_cond = add_all_frames_to_correct_as_cond
+        self.skip_mad_threshold = skip_mad_threshold
 
     @torch.inference_mode()
     def init_state(
@@ -96,20 +113,13 @@ class SAM2VideoPredictor(SAM2Base):
         # (we directly use their consolidated outputs during tracking)
         # metadata for each tracking frame (e.g. which direction it's tracked)
         inference_state["frames_tracked_per_obj"] = {}
+
+        # Add two slots to the inference state so they survive across frames
+        inference_state["last_processed_frame"] = None      # uint8 HWC tensor
+        inference_state["last_processed_output"] = None     # compact_current_out
+
         # Warm up the visual backbone and cache the image feature on frame 0
         self._get_image_feature(inference_state, frame_idx=0, batch_size=1)
-
-        first = inference_state["images"][0]
-        # If CHW, swap dims
-        if first.ndim == 3 and first.shape[0] in (1,3):
-            _, h, w = first.shape
-        elif first.ndim == 3 and first.shape[2] in (1,3):
-            h, w, _ = first.shape
-        else:
-            # Fallback: assume H x W
-            h, w = first.shape[-2], first.shape[-1]
-        inference_state["video_size"] = (h, w)
-
         return inference_state
 
     @classmethod
@@ -293,6 +303,11 @@ class SAM2VideoPredictor(SAM2Base):
         # Add the output to the output dict (to be used as future memory)
         obj_temp_output_dict[storage_key][frame_idx] = current_out
 
+        # Any user interaction invalidates reuse cache
+        inference_state["last_processed_frame"]  = None
+        inference_state["last_processed_output"] = None
+
+
         # Resize the output mask to the original video resolution
         obj_ids = inference_state["obj_ids"]
         consolidated_out = self._consolidate_temp_output_across_obj(
@@ -380,6 +395,10 @@ class SAM2VideoPredictor(SAM2Base):
         )
         # Add the output to the output dict (to be used as future memory)
         obj_temp_output_dict[storage_key][frame_idx] = current_out
+
+        # Any user interaction invalidates reuse cache
+        inference_state["last_processed_frame"]  = None
+        inference_state["last_processed_output"] = None
 
         # Resize the output mask to the original video resolution
         obj_ids = inference_state["obj_ids"]
@@ -564,201 +583,121 @@ class SAM2VideoPredictor(SAM2Base):
         max_frame_num_to_track=None,
         reverse=False,
     ):
-        """
-        Propagate the input prompts (points/masks) across all frames
-        in the video, optionally skipping low-change frames.
-        Yields (frame_idx, obj_ids, masks) once per frame.
-        """
-        # Prepare various buffers and metadata
+        """Propagate the input points across frames to track in the entire video."""
         self.propagate_in_video_preflight(inference_state)
 
-        obj_ids = inference_state["obj_ids"]                    # list of object IDs
-        num_frames = inference_state["num_frames"]              # total frames
-        batch_size = len(obj_ids)                               # number of objects
+        obj_ids = inference_state["obj_ids"]
+        num_frames = inference_state["num_frames"]
+        batch_size = self._get_obj_num(inference_state)
 
-        # Determine start/end indices
+        # set start index, end index, and processing order
         if start_frame_idx is None:
-            # first conditioning frame across all objects
+            # default: start from the earliest frame with input points
             start_frame_idx = min(
                 t
-                for obj_dict in inference_state["output_dict_per_obj"].values()
-                for t in obj_dict["cond_frame_outputs"]
+                for obj_output_dict in inference_state["output_dict_per_obj"].values()
+                for t in obj_output_dict["cond_frame_outputs"]
             )
         if max_frame_num_to_track is None:
+            # default: track all the frames in the video
             max_frame_num_to_track = num_frames
-
         if reverse:
             end_frame_idx = max(start_frame_idx - max_frame_num_to_track, 0)
-            processing_order = (
-                range(start_frame_idx, end_frame_idx - 1, -1)
-                if start_frame_idx > 0
-                else []
-            )
+            if start_frame_idx > 0:
+                processing_order = range(start_frame_idx, end_frame_idx - 1, -1)
+            else:
+                processing_order = []  # skip reverse tracking if starting from frame 0
         else:
-            end_frame_idx = min(start_frame_idx + max_frame_num_to_track, num_frames - 1)
+            end_frame_idx = min(
+                start_frame_idx + max_frame_num_to_track, num_frames - 1
+            )
             processing_order = range(start_frame_idx, end_frame_idx + 1)
 
-        # Track the last full-inference frame and mask for skipping
-        prev_frame_idx = None
-        prev_pred_masks = None
-
-        # Iterate through each frame index
+        t0 = time.time()
+        count = 0
         for frame_idx in tqdm(processing_order, desc="propagate in video"):
-            # Container for this frame’s predicted masks per object
             pred_masks_per_obj = [None] * batch_size
-
-            # Loop over each object independently
             for obj_idx in range(batch_size):
                 obj_output_dict = inference_state["output_dict_per_obj"][obj_idx]
-                storage_key = None
-                pred_masks = None
-
-                # 1) Conditioning frame (manual prompt)
+                # We skip those frames already in consolidated outputs (these are frames
+                # that received input clicks or mask). Note that we cannot directly run
+                # batched forward on them via `_run_single_frame_inference` because the
+                # number of clicks on each object might be different.
                 if frame_idx in obj_output_dict["cond_frame_outputs"]:
                     storage_key = "cond_frame_outputs"
                     current_out = obj_output_dict[storage_key][frame_idx]
                     device = inference_state["device"]
                     pred_masks = current_out["pred_masks"].to(device, non_blocking=True)
-
-                    prev_frame_idx = frame_idx
-                    prev_pred_masks = pred_masks
-
-                    # Optional: clear nearby non_cond memory
                     if self.clear_non_cond_mem_around_input:
+                        # clear non-conditioning memory of the surrounding frames
                         self._clear_obj_non_cond_mem_around_input(
                             inference_state, frame_idx, obj_idx
                         )
-
-                # 2) Already computed non-conditioning frame
-                elif frame_idx in obj_output_dict["non_cond_frame_outputs"]:
-                    storage_key = "non_cond_frame_outputs"
-                    current_out = obj_output_dict[storage_key][frame_idx]
-                    pred_masks = current_out["pred_masks"]
-
-                    prev_frame_idx = frame_idx
-                    prev_pred_masks = pred_masks
-
-                # 3) New frame: decide skip vs full inference
                 else:
                     storage_key = "non_cond_frame_outputs"
-
-                    # --- a) Memory-guided skip?
-                    if (
-                        self.skip_threshold is not None
-                        and self.skip_threshold > 0
-                        and prev_frame_idx is not None
-                    ):
-                        prev_frame = inference_state["images"][prev_frame_idx].cpu()
-                        curr_frame = inference_state["images"][frame_idx].cpu()
-                        if should_skip_frame(
-                            prev_frame, curr_frame, threshold=self.skip_threshold
-                        ):
-                            # Warp last mask and upsample
-                            print(f"Skipping frame {frame_idx} (reuse frame {prev_frame_idx}), skip threshold {self.skip_threshold}")
-                            warped_pred = warp_mask_forward(
-                                prev_pred_masks.cpu(),
-                                prev_frame.cpu().numpy(),
-                                curr_frame.cpu().numpy(),
+                    # ========= FRAME-SKIP CHECK (NEW) =========
+                    if inference_state["last_processed_frame"] is not None:
+                        prev_img  = inference_state["last_processed_frame"]
+                        curr_img  = inference_state["images"][frame_idx].cpu()  # uint8, HWC
+                        mad = _mean_abs_diff(prev_img, curr_img)
+                        if mad < self.skip_mad_threshold:
+                            print(
+                                f"Skipping frame {frame_idx} due to low MAD ({mad:.2f}) ")
+                            # Skip heavy inference: reuse previous output
+                            count += 1
+                            current_out = inference_state["last_processed_output"]
+                            pred_masks  = current_out["pred_masks"].to(
+                                inference_state["device"], non_blocking=True
                             )
+                            # still need to record bookkeeping so downstream code works
+                            obj_output_dict[storage_key][frame_idx] = current_out
+                        else:
+                            current_out, pred_masks = self._run_single_frame_inference(
+                                inference_state, obj_output_dict, frame_idx, 1,
+                                is_init_cond_frame=False, point_inputs=None, mask_inputs=None,
+                                reverse=reverse, run_mem_encoder=True
+                            )
+                            obj_output_dict[storage_key][frame_idx] = current_out
+                            # update cache
+                            inference_state["last_processed_frame"]  = curr_img
+                            inference_state["last_processed_output"] = current_out
+                    else:
+                        # first time – must run inference
+                        current_out, pred_masks = self._run_single_frame_inference(
+                            inference_state, obj_output_dict, frame_idx, 1,
+                            is_init_cond_frame=False, point_inputs=None, mask_inputs=None,
+                            reverse=reverse, run_mem_encoder=True
+                        )
+                        obj_output_dict[storage_key][frame_idx] = current_out
+                        # update cache
+                        inference_state["last_processed_frame"]  = inference_state["images"][frame_idx].cpu()
+                        inference_state["last_processed_output"] = current_out
+                    # ========= END FRAME-SKIP CHECK =========
 
-                            # ---------------------------------------------
-                            # 2) Shallow‐copy prior full‐inference dict so
-                            #    maskmem_features (and other keys) exist
-                            # ---------------------------------------------
-                            prev_mem_out = obj_output_dict["non_cond_frame_outputs"].get(prev_frame_idx)
-                            if prev_mem_out is None:
-                                prev_mem_out = obj_output_dict["cond_frame_outputs"][prev_frame_idx]
-                            obj_output_dict[storage_key][frame_idx] = dict(prev_mem_out)
-                            obj_output_dict[storage_key][frame_idx]["pred_masks"] = warped_pred
 
-                            # Now the memory bank for frame_idx has both key and mask features.
-
-                            # Pack into (1,C,Hmask,Wmask)
-                            wp = warped_pred
-                            if wp.ndim == 2:
-                                wp = wp.unsqueeze(0).unsqueeze(0)
-                            elif wp.ndim == 3:
-                                wp = wp.unsqueeze(0)
-
-                            # Upsample → (1,C,Hvideo,Wvideo)
-                            video_h, video_w = inference_state["video_size"]
-                            upsamp = F.interpolate(
-                                wp,
-                                size=(video_h, video_w),
-                                mode="bilinear",
-                                align_corners=False,
-                            ).squeeze(0)  # → (C,Hvideo,Wvideo)
-
-                            inference_state["frames_tracked_per_obj"][obj_idx][frame_idx] = {
-                                "reverse": reverse
-                            }
-
-                            # Save full-res mask for concatenation
-                            pred_masks_per_obj[obj_idx] = upsamp
-
-                            prev_frame_idx = frame_idx
-                            prev_pred_masks = warped_pred
-                            # done with this object
-                            continue
-
-                    # --- b) Fallback: full SAM 2 inference on this object
-                    current_out, pred_masks = self._run_single_frame_inference(
-                        inference_state=inference_state,
-                        output_dict=obj_output_dict,
-                        frame_idx=frame_idx,
-                        batch_size=1,
-                        is_init_cond_frame=False,
-                        point_inputs=None,
-                        mask_inputs=None,
-                        reverse=reverse,
-                        run_mem_encoder=True,
-                    )
-                    obj_output_dict[storage_key][frame_idx] = current_out
-
-                    prev_frame_idx = frame_idx
-                    prev_pred_masks = pred_masks
-
-                # Mark this object as tracked and record its prediction
                 inference_state["frames_tracked_per_obj"][obj_idx][frame_idx] = {
                     "reverse": reverse
                 }
                 pred_masks_per_obj[obj_idx] = pred_masks
 
-            # --- After processing all objects for this frame ---
-            # Concatenate or select single-object masks
-            if batch_size > 1:
+            # Resize the output mask to the original video resolution (we directly use
+            # the mask scores on GPU for output to avoid any CPU conversion in between)
+            if len(pred_masks_per_obj) > 1:
                 all_pred_masks = torch.cat(pred_masks_per_obj, dim=0)
             else:
                 all_pred_masks = pred_masks_per_obj[0]
+            _, video_res_masks = self._get_orig_video_res_output(
+                inference_state, all_pred_masks
+            )
 
-            video_H, video_W = inference_state["video_size"]
-
-            # 1) Move to CPU numpy
-            npm = all_pred_masks.detach().cpu().numpy()
-            # 2) Squeeze out any leading singleton batch dims until ndim <= 3
-            while npm.ndim > 3:
-                npm = np.squeeze(npm, axis=0)
-            # 3) Ensure channel axis: if 2-D, add channel dim
-            if npm.ndim == 2:
-                npm = npm[np.newaxis, ...]  # → shape (1, Hmask, Wmask)
-
-            # Now npm.ndim == 3: (C, Hmask, Wmask)
-            C, Hm, Wm = npm.shape
-            # 4) Prepare output array
-            resized = np.zeros((C, video_H, video_W), dtype=npm.dtype)
-            # 5) Resize each channel
-            for c in range(C):
-                resized[c] = cv2.resize(
-                    npm[c],
-                    dsize=(video_W, video_H),
-                    interpolation=cv2.INTER_LINEAR,
-                )
-
-            # 6) Convert back to torch.Tensor on the predictor’s device
-            device = inference_state["device"]
-            am_up = torch.from_numpy(resized).to(device)
-            # 7) Yield one mask-per-frame tensor
-            yield frame_idx, obj_ids, am_up
+            if frame_idx % 30 == 0 and frame_idx > 0:
+                dt = time.time() - t0
+                print(f"Avg FPS last 30 frames: {30/dt:.2f}")
+                t0 = time.time()
+            yield frame_idx, obj_ids, video_res_masks
+        # pront the number of skipped frames over the entire video
+        if count > 0:
+            print(f"Skipped {count} frame due to low MAD.")
 
     @torch.inference_mode()
     def clear_all_prompts_in_frame(
