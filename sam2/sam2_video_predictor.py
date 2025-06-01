@@ -614,78 +614,96 @@ class SAM2VideoPredictor(SAM2Base):
             processing_order = range(start_frame_idx, end_frame_idx + 1)
 
         t0 = time.time()
-        count = 0
+        skipped_ctr = 0
+
         for frame_idx in tqdm(processing_order, desc="propagate in video"):
+
+            # =========================================================
+            # 1) FRAME-LEVEL SKIP DECISION  (runs once per frame)
+            # =========================================================
+            reuse_this_frame = False
+            if (
+                inference_state["last_processed_frame"] is not None
+                and all(
+                    frame_idx not in inference_state["output_dict_per_obj"][i]["cond_frame_outputs"]
+                    for i in range(batch_size)
+                )
+            ):
+                prev = inference_state["last_processed_frame"]
+                curr = inference_state["images"][frame_idx].cpu()
+                mad  = _mean_abs_diff(prev, curr)
+                if mad < self.skip_mad_threshold:
+                    reuse_this_frame = True
+                    skipped_ctr     += 1
+                    print(f"Skipping frame {frame_idx} due to low MAD ({mad:.2f})")
+
             pred_masks_per_obj = [None] * batch_size
-            for obj_idx in range(batch_size):
-                obj_output_dict = inference_state["output_dict_per_obj"][obj_idx]
-                # We skip those frames already in consolidated outputs (these are frames
-                # that received input clicks or mask). Note that we cannot directly run
-                # batched forward on them via `_run_single_frame_inference` because the
-                # number of clicks on each object might be different.
-                if frame_idx in obj_output_dict["cond_frame_outputs"]:
-                    storage_key = "cond_frame_outputs"
-                    current_out = obj_output_dict[storage_key][frame_idx]
-                    device = inference_state["device"]
-                    pred_masks = current_out["pred_masks"].to(device, non_blocking=True)
-                    if self.clear_non_cond_mem_around_input:
-                        # clear non-conditioning memory of the surrounding frames
-                        self._clear_obj_non_cond_mem_around_input(
-                            inference_state, frame_idx, obj_idx
-                        )
-                else:
-                    storage_key = "non_cond_frame_outputs"
-                    # ========= FRAME-SKIP CHECK (NEW) =========
-                    if inference_state["last_processed_frame"] is not None:
-                        prev_img  = inference_state["last_processed_frame"]
-                        curr_img  = inference_state["images"][frame_idx].cpu()  # uint8, HWC
-                        mad = _mean_abs_diff(prev_img, curr_img)
-                        if mad < self.skip_mad_threshold:
-                            print(
-                                f"Skipping frame {frame_idx} due to low MAD ({mad:.2f}) ")
-                            # Skip heavy inference: reuse previous output
-                            count += 1
-                            current_out = inference_state["last_processed_output"]
-                            pred_masks  = current_out["pred_masks"].to(
-                                inference_state["device"], non_blocking=True
+
+            # =========================================================
+            # 2) FAST PATH – reuse cached outputs for *all* objects
+            # =========================================================
+            if reuse_this_frame:
+                cached_list = inference_state["last_processed_outputs"]   # len == batch_size
+                device      = inference_state["device"]
+
+                for obj_idx, cached_out in enumerate(cached_list):
+                    obj_dict = inference_state["output_dict_per_obj"][obj_idx]
+                    obj_dict["non_cond_frame_outputs"][frame_idx] = cached_out
+                    inference_state["frames_tracked_per_obj"][obj_idx][frame_idx] = {
+                        "reverse": reverse
+                    }
+                    pred_masks_per_obj[obj_idx] = cached_out["pred_masks"].to(
+                        device, non_blocking=True
+                    )
+
+            # =========================================================
+            # 3) SLOW PATH – run the model once per object
+            # =========================================================
+            else:
+                frame_outputs = []
+                for obj_idx in range(batch_size):
+                    obj_dict = inference_state["output_dict_per_obj"][obj_idx]
+
+                    # 3a) conditioning frame?
+                    if frame_idx in obj_dict["cond_frame_outputs"]:
+                        storage_key = "cond_frame_outputs"
+                        current_out = obj_dict[storage_key][frame_idx]
+                        device      = inference_state["device"]
+                        pred_masks  = current_out["pred_masks"].to(device, non_blocking=True)
+                        if self.clear_non_cond_mem_around_input:
+                            self._clear_obj_non_cond_mem_around_input(
+                                inference_state, frame_idx, obj_idx
                             )
-                            # still need to record bookkeeping so downstream code works
-                            obj_output_dict[storage_key][frame_idx] = current_out
-                        else:
-                            current_out, pred_masks = self._run_single_frame_inference(
-                                inference_state, obj_output_dict, frame_idx, 1,
-                                is_init_cond_frame=False, point_inputs=None, mask_inputs=None,
-                                reverse=reverse, run_mem_encoder=True
-                            )
-                            obj_output_dict[storage_key][frame_idx] = current_out
-                            # update cache
-                            inference_state["last_processed_frame"]  = curr_img
-                            inference_state["last_processed_output"] = current_out
+
+                    # 3b) plain frame – heavy inference
                     else:
-                        # first time – must run inference
+                        storage_key = "non_cond_frame_outputs"
                         current_out, pred_masks = self._run_single_frame_inference(
-                            inference_state, obj_output_dict, frame_idx, 1,
-                            is_init_cond_frame=False, point_inputs=None, mask_inputs=None,
+                            inference_state, obj_dict, frame_idx, 1,
+                            is_init_cond_frame=False,
+                            point_inputs=None, mask_inputs=None,
                             reverse=reverse, run_mem_encoder=True
                         )
-                        obj_output_dict[storage_key][frame_idx] = current_out
-                        # update cache
-                        inference_state["last_processed_frame"]  = inference_state["images"][frame_idx].cpu()
-                        inference_state["last_processed_output"] = current_out
-                    # ========= END FRAME-SKIP CHECK =========
+                        obj_dict[storage_key][frame_idx] = current_out
 
+                    inference_state["frames_tracked_per_obj"][obj_idx][frame_idx] = {
+                        "reverse": reverse
+                    }
+                    pred_masks_per_obj[obj_idx] = pred_masks
+                    frame_outputs.append(current_out)
 
-                inference_state["frames_tracked_per_obj"][obj_idx][frame_idx] = {
-                    "reverse": reverse
-                }
-                pred_masks_per_obj[obj_idx] = pred_masks
+                # ---- cache the full-frame outputs for the next frame ----
+                inference_state["last_processed_frame"]   = inference_state["images"][frame_idx].cpu()
+                inference_state["last_processed_outputs"] = frame_outputs
 
-            # Resize the output mask to the original video resolution (we directly use
-            # the mask scores on GPU for output to avoid any CPU conversion in between)
-            if len(pred_masks_per_obj) > 1:
+            # =========================================================
+            # 4) COMMON TAIL – resize masks & yield
+            # =========================================================
+            if batch_size > 1:
                 all_pred_masks = torch.cat(pred_masks_per_obj, dim=0)
             else:
                 all_pred_masks = pred_masks_per_obj[0]
+
             _, video_res_masks = self._get_orig_video_res_output(
                 inference_state, all_pred_masks
             )
@@ -694,10 +712,11 @@ class SAM2VideoPredictor(SAM2Base):
                 dt = time.time() - t0
                 print(f"Avg FPS last 30 frames: {30/dt:.2f}")
                 t0 = time.time()
+
             yield frame_idx, obj_ids, video_res_masks
-        # pront the number of skipped frames over the entire video
-        if count > 0:
-            print(f"Skipped {count} frame due to low MAD.")
+
+        if skipped_ctr:
+            print(f"Skipped {skipped_ctr} frames due to low MAD.")
 
     @torch.inference_mode()
     def clear_all_prompts_in_frame(
@@ -755,6 +774,9 @@ class SAM2VideoPredictor(SAM2Base):
         inference_state["output_dict_per_obj"].clear()
         inference_state["temp_output_dict_per_obj"].clear()
         inference_state["frames_tracked_per_obj"].clear()
+        inference_state["last_processed_frame"]   = None
+        inference_state["last_processed_outputs"] = None
+
 
     def _reset_tracking_results(self, inference_state):
         """Reset all tracking inputs and results across the videos."""
