@@ -29,15 +29,46 @@ for seq in sequences:
 
     # Initialize SAM2 state
     state = predictor.init_state(seq_img_dir)
-
-    # Load first-frame ground truth mask and add as prompt
+    
+    
+    # original code
+    # # Load first-frame ground truth mask and add as prompt
+    # mask0 = cv2.imread(os.path.join(seq_mask_dir, "00000.png"), cv2.IMREAD_GRAYSCALE)
+    # predictor.add_new_mask(state, frame_idx=0, obj_id=1, mask=mask0)
+    
     mask0 = cv2.imread(os.path.join(seq_mask_dir, "00000.png"), cv2.IMREAD_GRAYSCALE)
-    predictor.add_new_mask(state, frame_idx=0, obj_id=1, mask=mask0)
+    # If multiple objects are present in the initial mask, add each one separately
+    unique_ids = np.unique(mask0)
+    for obj_id in unique_ids:
+        if obj_id == 0:  # skip background label 0
+            continue
+        obj_mask = np.where(mask0 == obj_id, 255, 0).astype(np.uint8)
+        predictor.add_new_mask(state, frame_idx=0, obj_id=int(obj_id), mask=obj_mask)
 
     # Run propagation (with frame skipping)
     for frame_idx, obj_ids, masks in predictor.propagate_in_video(state):
-        # masks: Tensor [N_objects, H, W] on GPU
-        mask_np = masks[0].cpu().numpy().astype(np.uint8) * 255
+        # original code
+        # # masks: Tensor [N_objects, H, W] on GPU
+        # mask_np = masks[0].cpu().numpy().astype(np.uint8) * 255
+        
+        
+        # masks: Tensor [N_objects, H, W] on GPU 
+        mask_tensor = masks.squeeze(1).cpu().numpy().astype(np.uint8) 
+        if mask_tensor.shape[0] == 1:
+            # Only one object: make object mask white (255)
+            mask_np = mask_tensor[0] * 255
+        else:
+            # Combine masks for all objects into one label image
+            mask_np = np.zeros_like(mask_tensor[0])
+            for m_idx, obj_id in enumerate(obj_ids):
+                mask_np[mask_tensor[m_idx] > 0] = obj_id
+                
+        assert mask_np.ndim == 2, f"mask_np wrong shape {mask_np.shape}"
+        if mask_np.size == 0:
+                print(f"[WARN] Empty mask for frame {frame_idx} – skipping write")
+                continue
+                
+       
         out_path = os.path.join(out_seq_dir, f"{frame_idx:05d}.png")
         cv2.imwrite(out_path, mask_np)
 

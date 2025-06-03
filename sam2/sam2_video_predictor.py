@@ -4,6 +4,15 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
+# these code below is allow script to find sam2 file.
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.insert(0, project_root)
+########
+
+
 import warnings
 from collections import OrderedDict
 
@@ -14,6 +23,8 @@ from tqdm import tqdm
 
 from sam2.modeling.sam2_base import NO_OBJ_SCORE, SAM2Base
 from sam2.utils.misc import concat_points, fill_holes_in_mask_scores, load_video_frames
+
+from sam2.utils.change_detection import should_skip_frame
 
 # MGFK Helpers
 import cv2
@@ -631,11 +642,22 @@ class SAM2VideoPredictor(SAM2Base):
             ):
                 prev = inference_state["last_processed_frame"]
                 curr = inference_state["images"][frame_idx].cpu()
-                mad  = _mean_abs_diff(prev, curr)
-                if mad < self.skip_mad_threshold:
+
+                prev_pred_masks = [
+                    d["pred_masks"].squeeze(1).cpu().numpy().astype(np.uint8) 
+                    for d in inference_state["last_processed_outputs"]
+                    ]
+                if should_skip_frame(prev, curr, prev_masks=prev_pred_masks, threshold=self.skip_mad_threshold):
                     reuse_this_frame = True
-                    skipped_ctr     += 1
-                    print(f"Skipping frame {frame_idx} due to low MAD ({mad:.2f})")
+                    skipped_ctr += 1
+                    print(f"Skipping frame {frame_idx} (mask-aware MAD)")
+                    
+                # original code
+                # mad  = _mean_abs_diff(prev, curr)
+                # if mad < self.skip_mad_threshold:
+                #     reuse_this_frame = True
+                #     skipped_ctr     += 1
+                #     print(f"Skipping frame {frame_idx} due to low MAD ({mad:.2f})")
 
             pred_masks_per_obj = [None] * batch_size
 
