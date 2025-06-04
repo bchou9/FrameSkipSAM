@@ -20,6 +20,7 @@ import torch
 import torch.nn.functional as F
 
 from tqdm import tqdm
+from sam2.utils.change_detection import SKIP_MAD_THRESHOLD
 
 from sam2.modeling.sam2_base import NO_OBJ_SCORE, SAM2Base
 from sam2.utils.misc import concat_points, fill_holes_in_mask_scores, load_video_frames
@@ -89,7 +90,7 @@ class SAM2VideoPredictor(SAM2Base):
         # if `add_all_frames_to_correct_as_cond` is True, we also append to the conditioning frame list any frame that receives a later correction click
         # if `add_all_frames_to_correct_as_cond` is False, we conditioning frame list to only use those initial conditioning frames
         add_all_frames_to_correct_as_cond=False,
-        skip_mad_threshold: float = 0.05,
+        skip_mad_threshold: float = SKIP_MAD_THRESHOLD,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -681,8 +682,8 @@ class SAM2VideoPredictor(SAM2Base):
                     prev_pred_masks.append(mask_bool)
                 
                 # Calculate and print both global and masked MAD
-                global_mad = _mean_abs_diff(prev, curr)
-                masked_mad = _mean_abs_diff(prev, curr, prev_pred_masks)
+                global_mad = _mean_abs_diff(prev, curr) / 255.0
+                masked_mad = _mean_abs_diff(prev, curr, prev_pred_masks) / 255.0
                 
                 # Determine if we should skip this frame
                 skip = should_skip_frame(

@@ -4,6 +4,7 @@ import cv2
 import torch
 import numpy as np
 from sam2.build_sam import build_sam2_video_predictor
+from sam2.utils.change_detection import SKIP_MAD_THRESHOLD
 
 # Path to your DAVIS download
 DAVIS_ROOT = os.path.join(os.path.dirname(__file__), "datasets", "DAVIS", "DAVIS2017", "DAVIS")
@@ -15,7 +16,7 @@ os.makedirs(OUT_ROOT, exist_ok=True)
 # Initialize the predictor once
 device = "cuda" if torch.cuda.is_available() else "cpu"
 predictor = build_sam2_video_predictor(checkpoint="checkpoints/sam2.1_hiera_large.pt", config_file="configs/sam2.1/sam2.1_hiera_l.yaml").to(device)
-predictor.skip_mad_threshold = 0.05  # e.g. skip  frames if <5% pixel change
+predictor.skip_mad_threshold = SKIP_MAD_THRESHOLD 
 
 # Load all 480p sequence names
 seq_dir = os.path.join(DAVIS_ROOT, "JPEGImages", "480p")
