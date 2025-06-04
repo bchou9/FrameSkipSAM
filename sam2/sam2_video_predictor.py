@@ -697,8 +697,8 @@ class SAM2VideoPredictor(SAM2Base):
                     reuse_this_frame = True
                     skipped_ctr += 1
                     print(f"Skipping frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f} (threshold: {self.skip_mad_threshold})")
-                else:
-                    print(f"Processing frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f}")
+                # else:
+                    # print(f"Processing frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f}")
 
                 # original code
                 # mad  = _mean_abs_diff(prev, curr)
