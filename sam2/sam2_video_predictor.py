@@ -668,22 +668,37 @@ class SAM2VideoPredictor(SAM2Base):
                 inference_state["last_processed_frame"] is not None
                 and all(
                     frame_idx not in inference_state["output_dict_per_obj"][i]["cond_frame_outputs"]
-                    for i in range(batch_size)
-                )
+                    for i in range(batch_size))
             ):
                 prev = inference_state["last_processed_frame"]
                 curr = inference_state["images"][frame_idx].cpu()
-                # mad  = _mean_abs_diff(prev, curr)
-                prev_pred_masks = [
-                    d["pred_masks"].squeeze(1).cpu().numpy().astype(np.uint8) 
-                    for d in inference_state["last_processed_outputs"]
-                    ]
+                
+                # Build list of boolean masks for change detection
+                prev_pred_masks = []
+                for d in inference_state["last_processed_outputs"]:
+                    mask_tensor = d["pred_masks"][0,0]  # [H, W] low-res mask
+                    mask_bool = (mask_tensor > 0).cpu().numpy()
+                    prev_pred_masks.append(mask_bool)
+                
+                # Calculate and print both global and masked MAD
+                global_mad = _mean_abs_diff(prev, curr)
                 masked_mad = _mean_abs_diff(prev, curr, prev_pred_masks)
-                if should_skip_frame(prev, curr, prev_masks=prev_pred_masks, threshold=self.skip_mad_threshold):
+                
+                # Determine if we should skip this frame
+                skip = should_skip_frame(
+                    prev, 
+                    curr, 
+                    prev_masks=prev_pred_masks,
+                    threshold=self.skip_mad_threshold
+                )
+                
+                if skip:
                     reuse_this_frame = True
                     skipped_ctr += 1
-                    print(f"Skipping frame {frame_idx} due to low masked MAD ({masked_mad/255.0:.2f})")
-                    
+                    print(f"Skipping frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f} (threshold: {self.skip_mad_threshold})")
+                else:
+                    print(f"Processing frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f}")
+
                 # original code
                 # mad  = _mean_abs_diff(prev, curr)
                 # if mad < self.skip_mad_threshold:

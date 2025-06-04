@@ -24,59 +24,47 @@ def _to_grayscale_uint8(frame):
     return cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
 def should_skip_frame(prev_frame, curr_frame, prev_masks=None, threshold: float=0.05) -> bool:
-    # (Normalize and grayscale as before)
     prev_gray = _to_grayscale_uint8(prev_frame)
     curr_gray = _to_grayscale_uint8(curr_frame)
     diff = cv2.absdiff(prev_gray, curr_gray)
     
     if prev_masks is not None:
-        # Build flat list of 2D masks
-        if isinstance(prev_masks, torch.Tensor):
-            prev_masks = prev_masks.cpu().numpy()
+        # Build list of valid 2D masks
         mask_list = []
-        candidates = prev_masks if isinstance(prev_masks, (list, tuple)) else [prev_masks]
-        for m in candidates:
-            if isinstance(m, torch.Tensor):
-                m = m.cpu().numpy()
-            if m.ndim == 3:
-                for k in range(m.shape[0]):
-                    mask_list.append(m[k].astype(bool))
+        for mask in prev_masks:
+            if mask.shape != prev_gray.shape:
+                mask = cv2.resize(
+                    mask.astype(np.uint8), 
+                    dsize=(prev_gray.shape[1], prev_gray.shape[0]),
+                    interpolation=cv2.INTER_NEAREST
+                ).astype(bool)
             else:
-                mask_list.append(m.astype(bool))
-
-        H, W = diff.shape
-        # Build union of all object masks
-        union_mask = np.zeros((H, W), dtype=bool)
+                mask = mask.astype(bool)
+            mask_list.append(mask)
+        
+        # Create union of all masks
+        union_mask = np.zeros_like(prev_gray, dtype=bool)
         for mask in mask_list:
-            mask2 = mask[0] if (mask.ndim == 3) else mask
-            if mask2.shape != (H, W):
-                mask2 = cv2.resize(mask2.astype(np.uint8), dsize=(W, H),
-                                   interpolation=cv2.INTER_NEAREST)
-            mask_bool = mask2.astype(bool)
-            union_mask |= mask_bool
-
-        # Check changes outside the union of masks
-        if union_mask.any():
-            outside_mask = ~union_mask
-            if outside_mask.any():
-                frac_out = diff[outside_mask].mean() / 255.0
-                if frac_out >= threshold:
-                    return False  # outside region changed ⇒ do not skip
-
-        # Now check each object region
+            union_mask |= mask
+        
+        # Calculate change metrics
+        outside_mask = ~union_mask
+        max_change = 0.0
+        
+        # Check outside region
+        if outside_mask.any():
+            outside_change = diff[outside_mask].mean() / 255.0
+            max_change = max(max_change, outside_change)
+        
+        # Check inside each object region
         for mask in mask_list:
-            mask2 = mask[0] if (mask.ndim == 3) else mask
-            if mask2.shape != (H, W):
-                mask2 = cv2.resize(mask2.astype(np.uint8), dsize=(W, H),
-                                   interpolation=cv2.INTER_NEAREST)
-            mask_bool = mask2.astype(bool)
-            if not mask_bool.any():
-                continue
-            frac_changed = diff[mask_bool].mean() / 255.0
-            if frac_changed >= threshold:
-                return False  # object moved significantly ⇒ do not skip
-        return True  # no significant change inside or outside masks
-
-    # If no masks given, fallback to global mean diff
-    mean_diff = diff.mean() / 255.0
-    return mean_diff < threshold
+            if mask.any():
+                object_change = diff[mask].mean() / 255.0
+                max_change = max(max_change, object_change)
+        
+        # Skip frame if max change is below threshold
+        return max_change < threshold
+    
+    # Fallback to global MAD if no masks
+    global_mad = diff.mean() / 255.0
+    return global_mad < threshold
