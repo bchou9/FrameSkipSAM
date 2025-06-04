@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import torch
 
-def should_skip_frame(prev_frame, curr_frame, prev_masks=None, threshold: float = 0.1) -> bool:
+def should_skip_frame(prev_frame, curr_frame, prev_masks=None, threshold: float = 0.05) -> bool:
     """
     Decide whether the change between prev_frame and curr_frame is small enough to skip segmentation.
     The inputs can be PyTorch tensors (CHW normalized) or NumPy arrays.  threshold is in [0,1].

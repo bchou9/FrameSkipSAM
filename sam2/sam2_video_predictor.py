@@ -642,7 +642,7 @@ class SAM2VideoPredictor(SAM2Base):
             ):
                 prev = inference_state["last_processed_frame"]
                 curr = inference_state["images"][frame_idx].cpu()
-
+                mad  = _mean_abs_diff(prev, curr)
                 prev_pred_masks = [
                     d["pred_masks"].squeeze(1).cpu().numpy().astype(np.uint8) 
                     for d in inference_state["last_processed_outputs"]
@@ -650,7 +650,7 @@ class SAM2VideoPredictor(SAM2Base):
                 if should_skip_frame(prev, curr, prev_masks=prev_pred_masks, threshold=self.skip_mad_threshold):
                     reuse_this_frame = True
                     skipped_ctr += 1
-                    print(f"Skipping frame {frame_idx} (mask-aware MAD)")
+                    print(f"Skipping frame {frame_idx} due to low MAD({mad:.2f})")
                     
                 # original code
                 # mad  = _mean_abs_diff(prev, curr)
