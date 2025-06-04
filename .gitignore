@@ -12,3 +12,4 @@ demo/backend/checkpoints/*.pt
 datasets/*
 *.zip
 *.txt
+data
