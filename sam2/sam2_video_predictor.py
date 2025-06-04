@@ -31,17 +31,48 @@ import cv2
 import numpy as np
 import time
 
-def _mean_abs_diff(img1: torch.Tensor, img2: torch.Tensor) -> float:
-    """
-    Compute mean absolute pixel difference on two HWC images in uint8 range [0,255].
-    Inputs are 3-D CPU tensors (H,W,C) with dtype uint8.
-    """
-    # convert to NumPy for speed
-    a = img1.cpu().numpy().astype(np.int16)
-    b = img2.cpu().numpy().astype(np.int16)
-    return float(np.mean(np.abs(a - b)))
+def _mean_abs_diff(img1: torch.Tensor, img2: torch.Tensor, masks=None) -> float:
+    # Convert tensors to NumPy float and HWC format
+    a = img1.cpu().numpy().astype(np.float32)
+    b = img2.cpu().numpy().astype(np.float32)
+    # CHW->HWC if needed (3 channels)
+    if a.ndim == 3 and a.shape[0] == 3:
+        a = np.transpose(a, (1, 2, 0))
+        b = np.transpose(b, (1, 2, 0))
+    # Undo SAM2 normalization and scale to [0,255]
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+    std  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+    a = (a * std + mean) * 255.0
+    b = (b * std + mean) * 255.0
+    # Clip and convert to int16 to compute diff
+    a = np.clip(a, 0, 255).astype(np.int16)
+    b = np.clip(b, 0, 255).astype(np.int16)
 
+    H, W, _ = a.shape
+    diff_gray = np.abs(a - b).mean(axis=2)  # per-pixel mean across RGB
 
+    if masks is None:
+        return float(diff_gray.mean())
+
+    # Build union of (resized) masks
+    union_mask = np.zeros((H, W), dtype=bool)
+    if not isinstance(masks, (list, tuple)):
+        masks = [masks]
+    for m in masks:
+        m_np = m.cpu().numpy() if isinstance(m, torch.Tensor) else m
+        masks_iter = (m_np if m_np.ndim == 3 else [m_np])
+        for mask in masks_iter:
+            mask2d = mask.astype(bool)
+            if mask2d.shape != (H, W):
+                mask2d = cv2.resize(
+                    mask2d.astype(np.uint8), dsize=(W, H),
+                    interpolation=cv2.INTER_NEAREST
+                ).astype(bool)
+            union_mask |= mask2d
+    if union_mask.any():
+        return float(diff_gray[union_mask].mean())
+    else:
+        return 0.0  # no mask area => treat as no change
 
 
 class SAM2VideoPredictor(SAM2Base):
@@ -642,15 +673,16 @@ class SAM2VideoPredictor(SAM2Base):
             ):
                 prev = inference_state["last_processed_frame"]
                 curr = inference_state["images"][frame_idx].cpu()
-                mad  = _mean_abs_diff(prev, curr)
+                # mad  = _mean_abs_diff(prev, curr)
                 prev_pred_masks = [
                     d["pred_masks"].squeeze(1).cpu().numpy().astype(np.uint8) 
                     for d in inference_state["last_processed_outputs"]
                     ]
+                masked_mad = _mean_abs_diff(prev, curr, prev_pred_masks)
                 if should_skip_frame(prev, curr, prev_masks=prev_pred_masks, threshold=self.skip_mad_threshold):
                     reuse_this_frame = True
                     skipped_ctr += 1
-                    print(f"Skipping frame {frame_idx} due to low MAD({mad:.2f})")
+                    print(f"Skipping frame {frame_idx} due to low masked MAD ({masked_mad/255.0:.2f})")
                     
                 # original code
                 # mad  = _mean_abs_diff(prev, curr)

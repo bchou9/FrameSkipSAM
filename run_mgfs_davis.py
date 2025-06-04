@@ -15,7 +15,7 @@ os.makedirs(OUT_ROOT, exist_ok=True)
 # Initialize the predictor once
 device = "cuda" if torch.cuda.is_available() else "cpu"
 predictor = build_sam2_video_predictor(checkpoint="checkpoints/sam2.1_hiera_large.pt", config_file="configs/sam2.1/sam2.1_hiera_l.yaml").to(device)
-predictor.skip_threshold = 0.05  # e.g. skip  frames if <5% pixel change
+predictor.skip_mad_threshold = 0.05  # e.g. skip  frames if <5% pixel change
 
 # Load all 480p sequence names
 seq_dir = os.path.join(DAVIS_ROOT, "JPEGImages", "480p")
