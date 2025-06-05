@@ -1,0 +1,1184 @@
+Evaluating: ../davis2017eval/sam2_preds_MA_0.05_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_0.05_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.417    0.34     0.354   -0.028   0.494     0.399    0.007
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.006   0.292
+      bike-packing_2   0.005   0.312
+         blackswan_1   0.959   0.988
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.966   0.994
+             camel_1   0.965   0.996
+    car-roundabout_1   0.988   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.960   0.989
+       dance-twirl_1   0.945   0.975
+               dog_1   0.952   0.968
+         dogs-jump_1   0.001   0.038
+         dogs-jump_2   0.001   0.037
+         dogs-jump_3   0.951   0.992
+     drift-chicane_1   0.925   0.988
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.018
+         gold-fish_2   0.870   0.944
+         gold-fish_3   0.000   0.016
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.073
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.307
+             india_2   0.051   0.147
+             india_3   0.895   0.900
+              judo_1   0.018   0.223
+              judo_2   0.006   0.218
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.827   0.974
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.384   0.760
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.001   0.300
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.002   0.357
+           loading_2   0.002   0.347
+           loading_3   0.952   0.996
+       mbike-trick_1   0.007   0.506
+       mbike-trick_2   0.011   0.490
+    motocross-jump_1   0.003   0.311
+    motocross-jump_2   0.007   0.265
+paragliding-launch_1   0.005   0.330
+paragliding-launch_2   0.091   0.455
+paragliding-launch_3   0.176   0.503
+           parkour_1   0.959   0.988
+              pigs_1   0.004   0.193
+              pigs_2   0.012   0.218
+              pigs_3   0.938   0.913
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.006   0.349
+           soapbox_2   0.014   0.331
+           soapbox_3   0.905   0.973
+
+Total time:0.00627899169921875Done with: ../davis2017eval/sam2_preds_MA_0.05_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_0.07_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_0.07_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.417    0.34     0.354   -0.028   0.494     0.399    0.007
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.006   0.292
+      bike-packing_2   0.005   0.312
+         blackswan_1   0.959   0.988
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.966   0.994
+             camel_1   0.965   0.996
+    car-roundabout_1   0.988   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.960   0.989
+       dance-twirl_1   0.945   0.975
+               dog_1   0.952   0.968
+         dogs-jump_1   0.001   0.038
+         dogs-jump_2   0.001   0.037
+         dogs-jump_3   0.951   0.992
+     drift-chicane_1   0.925   0.988
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.018
+         gold-fish_2   0.870   0.944
+         gold-fish_3   0.000   0.016
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.073
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.307
+             india_2   0.051   0.147
+             india_3   0.895   0.900
+              judo_1   0.018   0.223
+              judo_2   0.006   0.218
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.827   0.974
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.384   0.760
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.001   0.300
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.002   0.357
+           loading_2   0.002   0.347
+           loading_3   0.952   0.996
+       mbike-trick_1   0.007   0.506
+       mbike-trick_2   0.011   0.490
+    motocross-jump_1   0.003   0.311
+    motocross-jump_2   0.007   0.265
+paragliding-launch_1   0.005   0.330
+paragliding-launch_2   0.091   0.455
+paragliding-launch_3   0.176   0.503
+           parkour_1   0.959   0.988
+              pigs_1   0.004   0.193
+              pigs_2   0.012   0.218
+              pigs_3   0.938   0.913
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.006   0.349
+           soapbox_2   0.014   0.331
+           soapbox_3   0.905   0.973
+
+Total time:0.006403923034667969Done with: ../davis2017eval/sam2_preds_MA_0.07_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_0.10_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_0.10_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.388   0.317     0.344   -0.017   0.459     0.371    0.016
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.007   0.290
+      bike-packing_2   0.006   0.310
+         blackswan_1   0.904   0.969
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.330
+        breakdance_1   0.966   0.994
+             camel_1   0.889   0.941
+    car-roundabout_1   0.968   0.955
+        car-shadow_1   0.969   0.998
+              cows_1   0.888   0.916
+       dance-twirl_1   0.935   0.967
+               dog_1   0.823   0.689
+         dogs-jump_1   0.000   0.036
+         dogs-jump_2   0.002   0.036
+         dogs-jump_3   0.915   0.982
+     drift-chicane_1   0.842   0.887
+    drift-straight_1   0.968   0.982
+              goat_1   0.925   0.965
+         gold-fish_1   0.001   0.014
+         gold-fish_2   0.702   0.749
+         gold-fish_3   0.001   0.019
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.002   0.072
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.284
+             india_2   0.041   0.143
+             india_3   0.769   0.704
+              judo_1   0.027   0.202
+              judo_2   0.011   0.195
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.827   0.974
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.027   0.277
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.004   0.313
+          lab-coat_5   0.000   0.000
+             libby_1   0.895   0.974
+           loading_1   0.013   0.259
+           loading_2   0.014   0.258
+           loading_3   0.790   0.790
+       mbike-trick_1   0.009   0.505
+       mbike-trick_2   0.014   0.493
+    motocross-jump_1   0.004   0.311
+    motocross-jump_2   0.007   0.265
+paragliding-launch_1   0.006   0.330
+paragliding-launch_2   0.088   0.453
+paragliding-launch_3   0.170   0.510
+           parkour_1   0.940   0.975
+              pigs_1   0.023   0.196
+              pigs_2   0.018   0.172
+              pigs_3   0.858   0.718
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.004   0.170
+          shooting_2   0.007   0.193
+          shooting_3   0.871   0.973
+           soapbox_1   0.007   0.348
+           soapbox_2   0.016   0.333
+           soapbox_3   0.882   0.971
+
+Total time:0.006384611129760742Done with: ../davis2017eval/sam2_preds_MA_0.10_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_0.15_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_0.15_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.324   0.265     0.287   -0.006   0.382     0.296    0.027
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.011   0.283
+      bike-packing_2   0.011   0.298
+         blackswan_1   0.750   0.667
+         bmx-trees_1   0.017   0.342
+         bmx-trees_2   0.017   0.325
+        breakdance_1   0.933   0.945
+             camel_1   0.771   0.732
+    car-roundabout_1   0.910   0.827
+        car-shadow_1   0.951   0.985
+              cows_1   0.783   0.733
+       dance-twirl_1   0.855   0.889
+               dog_1   0.553   0.356
+         dogs-jump_1   0.002   0.029
+         dogs-jump_2   0.004   0.030
+         dogs-jump_3   0.846   0.946
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.948   0.945
+              goat_1   0.827   0.816
+         gold-fish_1   0.000   0.001
+         gold-fish_2   0.382   0.314
+         gold-fish_3   0.040   0.108
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.006   0.038
+    horsejump-high_1   0.008   0.239
+    horsejump-high_2   0.009   0.264
+             india_1   0.233   0.261
+             india_2   0.044   0.069
+             india_3   0.553   0.501
+              judo_1   0.057   0.187
+              judo_2   0.009   0.155
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.809   0.971
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.037   0.288
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.016   0.288
+          lab-coat_5   0.000   0.000
+             libby_1   0.637   0.783
+           loading_1   0.035   0.194
+           loading_2   0.038   0.181
+           loading_3   0.555   0.510
+       mbike-trick_1   0.019   0.479
+       mbike-trick_2   0.025   0.481
+    motocross-jump_1   0.019   0.276
+    motocross-jump_2   0.018   0.216
+paragliding-launch_1   0.013   0.337
+paragliding-launch_2   0.083   0.432
+paragliding-launch_3   0.116   0.481
+           parkour_1   0.821   0.825
+              pigs_1   0.153   0.236
+              pigs_2   0.015   0.090
+              pigs_3   0.728   0.480
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.008   0.149
+          shooting_2   0.013   0.161
+          shooting_3   0.667   0.819
+           soapbox_1   0.012   0.326
+           soapbox_2   0.024   0.330
+           soapbox_3   0.763   0.899
+
+Total time:0.0063991546630859375Done with: ../davis2017eval/sam2_preds_MA_0.15_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.05_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.05_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.006556272506713867Done with: ../davis2017eval/sam2_preds_MA_OF_0.05_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.07_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.07_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.007052183151245117Done with: ../davis2017eval/sam2_preds_MA_OF_0.07_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.10_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.10_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.006283283233642578Done with: ../davis2017eval/sam2_preds_MA_OF_0.10_gray
+
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.15_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.15_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.006411552429199219Done with: ../davis2017eval/sam2_preds_MA_OF_0.15_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.05_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.05_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.415   0.339     0.352   -0.032   0.491     0.396    0.002
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.006   0.291
+      bike-packing_2   0.006   0.312
+         blackswan_1   0.961   0.987
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.966   0.994
+             camel_1   0.979   0.999
+    car-roundabout_1   0.989   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.975   0.994
+       dance-twirl_1   0.945   0.975
+               dog_1   0.965   0.990
+         dogs-jump_1   0.001   0.038
+         dogs-jump_2   0.001   0.037
+         dogs-jump_3   0.948   0.991
+     drift-chicane_1   0.742   0.783
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.019
+         gold-fish_2   0.917   0.955
+         gold-fish_3   0.000   0.017
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.073
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.309
+             india_2   0.051   0.144
+             india_3   0.903   0.904
+              judo_1   0.027   0.201
+              judo_2   0.013   0.199
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.827   0.974
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.384   0.760
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.001   0.300
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.001   0.358
+           loading_2   0.001   0.349
+           loading_3   0.958   0.997
+       mbike-trick_1   0.009   0.508
+       mbike-trick_2   0.013   0.491
+    motocross-jump_1   0.003   0.311
+    motocross-jump_2   0.007   0.265
+paragliding-launch_1   0.005   0.330
+paragliding-launch_2   0.091   0.455
+paragliding-launch_3   0.176   0.503
+           parkour_1   0.959   0.988
+              pigs_1   0.003   0.192
+              pigs_2   0.010   0.218
+              pigs_3   0.949   0.931
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.006   0.348
+           soapbox_2   0.015   0.331
+           soapbox_3   0.902   0.973
+
+Total time:0.006302833557128906Done with: ../davis2017eval/sam2_preds_Naive_0.05_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.07_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.07_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.412   0.337     0.349   -0.032   0.486     0.392    0.006
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.006   0.291
+      bike-packing_2   0.006   0.312
+         blackswan_1   0.961   0.987
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.966   0.994
+             camel_1   0.979   0.999
+    car-roundabout_1   0.989   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.975   0.994
+       dance-twirl_1   0.945   0.975
+               dog_1   0.965   0.990
+         dogs-jump_1   0.001   0.036
+         dogs-jump_2   0.001   0.033
+         dogs-jump_3   0.928   0.981
+     drift-chicane_1   0.618   0.617
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.019
+         gold-fish_2   0.911   0.953
+         gold-fish_3   0.000   0.015
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.073
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.309
+             india_2   0.051   0.144
+             india_3   0.903   0.904
+              judo_1   0.050   0.206
+              judo_2   0.011   0.166
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.827   0.974
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.384   0.760
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.001   0.300
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.001   0.358
+           loading_2   0.001   0.349
+           loading_3   0.958   0.997
+       mbike-trick_1   0.012   0.506
+       mbike-trick_2   0.017   0.492
+    motocross-jump_1   0.005   0.309
+    motocross-jump_2   0.008   0.260
+paragliding-launch_1   0.005   0.330
+paragliding-launch_2   0.091   0.455
+paragliding-launch_3   0.176   0.503
+           parkour_1   0.959   0.988
+              pigs_1   0.007   0.170
+              pigs_2   0.012   0.195
+              pigs_3   0.926   0.887
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.006   0.349
+           soapbox_2   0.015   0.332
+           soapbox_3   0.901   0.973
+
+Total time:0.007107973098754883Done with: ../davis2017eval/sam2_preds_Naive_0.07_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.10_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.10_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.401   0.329      0.34   -0.028   0.473     0.378    0.012
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.010   0.285
+      bike-packing_2   0.007   0.300
+         blackswan_1   0.961   0.987
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.892   0.891
+             camel_1   0.979   0.999
+    car-roundabout_1   0.989   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.973   0.993
+       dance-twirl_1   0.943   0.973
+               dog_1   0.965   0.990
+         dogs-jump_1   0.002   0.033
+         dogs-jump_2   0.004   0.030
+         dogs-jump_3   0.877   0.958
+     drift-chicane_1   0.355   0.339
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.018
+         gold-fish_2   0.870   0.944
+         gold-fish_3   0.000   0.016
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.073
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.308
+             india_2   0.051   0.144
+             india_3   0.902   0.905
+              judo_1   0.086   0.181
+              judo_2   0.008   0.143
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.742   0.926
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.384   0.760
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.001   0.300
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.001   0.358
+           loading_2   0.001   0.349
+           loading_3   0.958   0.997
+       mbike-trick_1   0.024   0.480
+       mbike-trick_2   0.029   0.473
+    motocross-jump_1   0.010   0.305
+    motocross-jump_2   0.009   0.249
+paragliding-launch_1   0.006   0.331
+paragliding-launch_2   0.091   0.455
+paragliding-launch_3   0.170   0.510
+           parkour_1   0.959   0.988
+              pigs_1   0.027   0.147
+              pigs_2   0.016   0.141
+              pigs_3   0.851   0.723
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.006   0.346
+           soapbox_2   0.016   0.331
+           soapbox_3   0.898   0.972
+
+Total time:0.008157968521118164Done with: ../davis2017eval/sam2_preds_Naive_0.10_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.15_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_0.15_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+     0.38   0.313     0.327   -0.015   0.447     0.346    0.021
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.015   0.280
+      bike-packing_2   0.010   0.287
+         blackswan_1   0.961   0.987
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.713   0.640
+             camel_1   0.979   0.998
+    car-roundabout_1   0.989   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.968   0.990
+       dance-twirl_1   0.935   0.964
+               dog_1   0.918   0.895
+         dogs-jump_1   0.004   0.026
+         dogs-jump_2   0.008   0.027
+         dogs-jump_3   0.792   0.913
+     drift-chicane_1   0.053   0.064
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.016
+         gold-fish_2   0.800   0.873
+         gold-fish_3   0.000   0.017
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.001   0.071
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.305
+             india_2   0.052   0.150
+             india_3   0.892   0.903
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.496   0.721
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.371   0.732
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.004   0.310
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.002   0.357
+           loading_2   0.002   0.347
+           loading_3   0.954   0.996
+       mbike-trick_1   0.053   0.384
+       mbike-trick_2   0.039   0.384
+    motocross-jump_1   0.014   0.303
+    motocross-jump_2   0.010   0.238
+paragliding-launch_1   0.010   0.328
+paragliding-launch_2   0.086   0.442
+paragliding-launch_3   0.128   0.452
+           parkour_1   0.959   0.988
+              pigs_1   0.129   0.228
+              pigs_2   0.017   0.056
+              pigs_3   0.698   0.438
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.007   0.344
+           soapbox_2   0.019   0.336
+           soapbox_3   0.878   0.967
+
+Total time:0.006453514099121094Done with: ../davis2017eval/sam2_preds_Naive_0.15_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.05_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.05_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.006317138671875Done with: ../davis2017eval/sam2_preds_Naive_OF_0.05_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.07_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.07_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.006937265396118164Done with: ../davis2017eval/sam2_preds_Naive_OF_0.07_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.10_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.10_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.010185956954956055Done with: ../davis2017eval/sam2_preds_Naive_OF_0.10_gray
+
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.15_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.15_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.148   0.137     0.088    0.074    0.16     0.053    0.147
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.097   0.194
+      bike-packing_2   0.006   0.056
+         blackswan_1   0.545   0.333
+         bmx-trees_1   0.017   0.073
+         bmx-trees_2   0.013   0.092
+        breakdance_1   0.216   0.188
+             camel_1   0.455   0.285
+    car-roundabout_1   0.731   0.437
+        car-shadow_1   0.408   0.259
+              cows_1   0.583   0.446
+       dance-twirl_1   0.343   0.316
+               dog_1   0.327   0.184
+         dogs-jump_1   0.072   0.104
+         dogs-jump_2   0.039   0.061
+         dogs-jump_3   0.541   0.606
+     drift-chicane_1   0.017   0.028
+    drift-straight_1   0.060   0.097
+              goat_1   0.211   0.144
+         gold-fish_1   0.000   0.000
+         gold-fish_2   0.312   0.248
+         gold-fish_3   0.078   0.162
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.007
+    horsejump-high_1   0.049   0.106
+    horsejump-high_2   0.009   0.035
+             india_1   0.000   0.015
+             india_2   0.087   0.093
+             india_3   0.317   0.250
+              judo_1   0.122   0.211
+              judo_2   0.007   0.128
+         kite-surf_1   0.000   0.001
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.116   0.275
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.001   0.179
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.203   0.171
+          lab-coat_5   0.000   0.000
+             libby_1   0.304   0.356
+           loading_1   0.021   0.085
+           loading_2   0.050   0.124
+           loading_3   0.165   0.175
+       mbike-trick_1   0.039   0.183
+       mbike-trick_2   0.044   0.245
+    motocross-jump_1   0.018   0.099
+    motocross-jump_2   0.050   0.115
+paragliding-launch_1   0.104   0.241
+paragliding-launch_2   0.066   0.176
+paragliding-launch_3   0.012   0.216
+           parkour_1   0.101   0.158
+              pigs_1   0.261   0.213
+              pigs_2   0.000   0.000
+              pigs_3   0.649   0.392
+     scooter-black_1   0.032   0.131
+     scooter-black_2   0.004   0.047
+          shooting_1   0.142   0.170
+          shooting_2   0.120   0.194
+          shooting_3   0.058   0.178
+           soapbox_1   0.005   0.110
+           soapbox_2   0.041   0.134
+           soapbox_3   0.067   0.228
+
+Total time:0.006386280059814453Done with: ../davis2017eval/sam2_preds_Naive_OF_0.15_gray
+
