@@ -4,6 +4,15 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
+# these code below is allow script to find sam2 file.
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.insert(0, project_root)
+########
+
+
 import warnings
 from collections import OrderedDict
 
@@ -11,26 +20,60 @@ import torch
 import torch.nn.functional as F
 
 from tqdm import tqdm
+from sam2.utils.change_detection import SKIP_MAD_THRESHOLD
 
 from sam2.modeling.sam2_base import NO_OBJ_SCORE, SAM2Base
 from sam2.utils.misc import concat_points, fill_holes_in_mask_scores, load_video_frames
+
+from sam2.utils.change_detection import should_skip_frame
 
 # MGFK Helpers
 import cv2
 import numpy as np
 import time
 
-def _mean_abs_diff(img1: torch.Tensor, img2: torch.Tensor) -> float:
-    """
-    Compute mean absolute pixel difference on two HWC images in uint8 range [0,255].
-    Inputs are 3-D CPU tensors (H,W,C) with dtype uint8.
-    """
-    # convert to NumPy for speed
-    a = img1.cpu().numpy().astype(np.int16)
-    b = img2.cpu().numpy().astype(np.int16)
-    return float(np.mean(np.abs(a - b)))
+def _mean_abs_diff(img1: torch.Tensor, img2: torch.Tensor, masks=None) -> float:
+    # Convert tensors to NumPy float and HWC format
+    a = img1.cpu().numpy().astype(np.float32)
+    b = img2.cpu().numpy().astype(np.float32)
+    # CHW->HWC if needed (3 channels)
+    if a.ndim == 3 and a.shape[0] == 3:
+        a = np.transpose(a, (1, 2, 0))
+        b = np.transpose(b, (1, 2, 0))
+    # Undo SAM2 normalization and scale to [0,255]
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+    std  = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+    a = (a * std + mean) * 255.0
+    b = (b * std + mean) * 255.0
+    # Clip and convert to int16 to compute diff
+    a = np.clip(a, 0, 255).astype(np.int16)
+    b = np.clip(b, 0, 255).astype(np.int16)
 
+    H, W, _ = a.shape
+    diff_gray = np.abs(a - b).mean(axis=2)  # per-pixel mean across RGB
 
+    if masks is None:
+        return float(diff_gray.mean())
+
+    # Build union of (resized) masks
+    union_mask = np.zeros((H, W), dtype=bool)
+    if not isinstance(masks, (list, tuple)):
+        masks = [masks]
+    for m in masks:
+        m_np = m.cpu().numpy() if isinstance(m, torch.Tensor) else m
+        masks_iter = (m_np if m_np.ndim == 3 else [m_np])
+        for mask in masks_iter:
+            mask2d = mask.astype(bool)
+            if mask2d.shape != (H, W):
+                mask2d = cv2.resize(
+                    mask2d.astype(np.uint8), dsize=(W, H),
+                    interpolation=cv2.INTER_NEAREST
+                ).astype(bool)
+            union_mask |= mask2d
+    if union_mask.any():
+        return float(diff_gray[union_mask].mean())
+    else:
+        return 0.0  # no mask area => treat as no change
 
 
 class SAM2VideoPredictor(SAM2Base):
@@ -47,7 +90,7 @@ class SAM2VideoPredictor(SAM2Base):
         # if `add_all_frames_to_correct_as_cond` is True, we also append to the conditioning frame list any frame that receives a later correction click
         # if `add_all_frames_to_correct_as_cond` is False, we conditioning frame list to only use those initial conditioning frames
         add_all_frames_to_correct_as_cond=False,
-        skip_mad_threshold: float = 0.05,
+        skip_mad_threshold: float = SKIP_MAD_THRESHOLD,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -626,16 +669,43 @@ class SAM2VideoPredictor(SAM2Base):
                 inference_state["last_processed_frame"] is not None
                 and all(
                     frame_idx not in inference_state["output_dict_per_obj"][i]["cond_frame_outputs"]
-                    for i in range(batch_size)
-                )
+                    for i in range(batch_size))
             ):
                 prev = inference_state["last_processed_frame"]
                 curr = inference_state["images"][frame_idx].cpu()
-                mad  = _mean_abs_diff(prev, curr)
-                if mad < self.skip_mad_threshold:
+                
+                # Build list of boolean masks for change detection
+                prev_pred_masks = []
+                for d in inference_state["last_processed_outputs"]:
+                    mask_tensor = d["pred_masks"][0,0]  # [H, W] low-res mask
+                    mask_bool = (mask_tensor > 0).cpu().numpy()
+                    prev_pred_masks.append(mask_bool)
+                
+                # Calculate and print both global and masked MAD
+                global_mad = _mean_abs_diff(prev, curr) / 255.0
+                masked_mad = _mean_abs_diff(prev, curr, prev_pred_masks) / 255.0
+                
+                # Determine if we should skip this frame
+                skip = should_skip_frame(
+                    prev, 
+                    curr, 
+                    prev_masks=prev_pred_masks,
+                    threshold=self.skip_mad_threshold
+                )
+                
+                if skip:
                     reuse_this_frame = True
-                    skipped_ctr     += 1
-                    print(f"Skipping frame {frame_idx} due to low MAD ({mad:.2f})")
+                    skipped_ctr += 1
+                    print(f"Skipping frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f} (threshold: {self.skip_mad_threshold})")
+                # else:
+                    # print(f"Processing frame {frame_idx} - Global MAD: {global_mad:.4f}, Masked MAD: {masked_mad:.4f}")
+
+                # original code
+                # mad  = _mean_abs_diff(prev, curr)
+                # if mad < self.skip_mad_threshold:
+                #     reuse_this_frame = True
+                #     skipped_ctr     += 1
+                #     print(f"Skipping frame {frame_idx} due to low MAD ({mad:.2f})")
 
             pred_masks_per_obj = [None] * batch_size
 
