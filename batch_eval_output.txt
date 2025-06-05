@@ -1,3 +1,77 @@
+Evaluating: ../davis2017eval/sam2_preds_baseline_gray
+========================
+Evaluating: ../davis2017eval/sam2_preds_baseline_gray
+Using precomputed results...
+--------------------------- Global results for val ---------------------------
+ J&F-Mean  J-Mean  J-Recall  J-Decay  F-Mean  F-Recall  F-Decay
+    0.419   0.342     0.354   -0.028   0.496     0.399    0.007
+
+---------- Per sequence results for val ----------
+            Sequence  J-Mean  F-Mean
+      bike-packing_1   0.006   0.292
+      bike-packing_2   0.005   0.312
+         blackswan_1   0.961   0.987
+         bmx-trees_1   0.015   0.344
+         bmx-trees_2   0.015   0.331
+        breakdance_1   0.966   0.994
+             camel_1   0.979   0.999
+    car-roundabout_1   0.989   0.970
+        car-shadow_1   0.977   0.998
+              cows_1   0.975   0.994
+       dance-twirl_1   0.945   0.975
+               dog_1   0.965   0.990
+         dogs-jump_1   0.001   0.038
+         dogs-jump_2   0.001   0.037
+         dogs-jump_3   0.953   0.992
+     drift-chicane_1   0.926   0.989
+    drift-straight_1   0.969   0.982
+              goat_1   0.931   0.970
+         gold-fish_1   0.000   0.019
+         gold-fish_2   0.917   0.955
+         gold-fish_3   0.000   0.017
+         gold-fish_4   0.000   0.000
+         gold-fish_5   0.000   0.073
+    horsejump-high_1   0.007   0.244
+    horsejump-high_2   0.006   0.266
+             india_1   0.228   0.309
+             india_2   0.051   0.144
+             india_3   0.903   0.904
+              judo_1   0.016   0.224
+              judo_2   0.005   0.221
+         kite-surf_1   0.000   0.000
+         kite-surf_2   0.000   0.000
+         kite-surf_3   0.827   0.974
+          lab-coat_1   0.000   0.000
+          lab-coat_2   0.384   0.760
+          lab-coat_3   0.000   0.000
+          lab-coat_4   0.001   0.300
+          lab-coat_5   0.000   0.000
+             libby_1   0.918   0.988
+           loading_1   0.001   0.358
+           loading_2   0.001   0.349
+           loading_3   0.958   0.997
+       mbike-trick_1   0.007   0.505
+       mbike-trick_2   0.011   0.489
+    motocross-jump_1   0.003   0.311
+    motocross-jump_2   0.007   0.265
+paragliding-launch_1   0.005   0.330
+paragliding-launch_2   0.091   0.455
+paragliding-launch_3   0.176   0.503
+           parkour_1   0.959   0.988
+              pigs_1   0.001   0.200
+              pigs_2   0.007   0.233
+              pigs_3   0.965   0.946
+     scooter-black_1   0.005   0.377
+     scooter-black_2   0.012   0.368
+          shooting_1   0.003   0.171
+          shooting_2   0.007   0.194
+          shooting_3   0.898   0.972
+           soapbox_1   0.006   0.349
+           soapbox_2   0.014   0.331
+           soapbox_3   0.905   0.973
+
+Total time:0.0062067508697509766Done with: ../davis2017eval/sam2_preds_baseline_gray
+
 Evaluating: ../davis2017eval/sam2_preds_MA_0.05_gray
 ========================
 Evaluating: ../davis2017eval/sam2_preds_MA_0.05_gray
@@ -70,7 +144,7 @@ paragliding-launch_3   0.176   0.503
            soapbox_2   0.014   0.331
            soapbox_3   0.905   0.973
 
-Total time:0.00627899169921875Done with: ../davis2017eval/sam2_preds_MA_0.05_gray
+Total time:0.0062143802642822266Done with: ../davis2017eval/sam2_preds_MA_0.05_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_0.07_gray
 ========================
@@ -144,7 +218,7 @@ paragliding-launch_3   0.176   0.503
            soapbox_2   0.014   0.331
            soapbox_3   0.905   0.973
 
-Total time:0.006403923034667969Done with: ../davis2017eval/sam2_preds_MA_0.07_gray
+Total time:0.007117033004760742Done with: ../davis2017eval/sam2_preds_MA_0.07_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_0.10_gray
 ========================
@@ -218,7 +292,7 @@ paragliding-launch_3   0.170   0.510
            soapbox_2   0.016   0.333
            soapbox_3   0.882   0.971
 
-Total time:0.006384611129760742Done with: ../davis2017eval/sam2_preds_MA_0.10_gray
+Total time:0.0062749385833740234Done with: ../davis2017eval/sam2_preds_MA_0.10_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_0.15_gray
 ========================
@@ -292,7 +366,7 @@ paragliding-launch_3   0.116   0.481
            soapbox_2   0.024   0.330
            soapbox_3   0.763   0.899
 
-Total time:0.0063991546630859375Done with: ../davis2017eval/sam2_preds_MA_0.15_gray
+Total time:0.007968425750732422Done with: ../davis2017eval/sam2_preds_MA_0.15_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.05_gray
 ========================
@@ -366,7 +440,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.006556272506713867Done with: ../davis2017eval/sam2_preds_MA_OF_0.05_gray
+Total time:0.0063877105712890625Done with: ../davis2017eval/sam2_preds_MA_OF_0.05_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.07_gray
 ========================
@@ -440,7 +514,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.007052183151245117Done with: ../davis2017eval/sam2_preds_MA_OF_0.07_gray
+Total time:0.006155967712402344Done with: ../davis2017eval/sam2_preds_MA_OF_0.07_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.10_gray
 ========================
@@ -514,7 +588,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.006283283233642578Done with: ../davis2017eval/sam2_preds_MA_OF_0.10_gray
+Total time:0.006284475326538086Done with: ../davis2017eval/sam2_preds_MA_OF_0.10_gray
 
 Evaluating: ../davis2017eval/sam2_preds_MA_OF_0.15_gray
 ========================
@@ -588,7 +662,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.006411552429199219Done with: ../davis2017eval/sam2_preds_MA_OF_0.15_gray
+Total time:0.006330728530883789Done with: ../davis2017eval/sam2_preds_MA_OF_0.15_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_0.05_gray
 ========================
@@ -662,7 +736,7 @@ paragliding-launch_3   0.176   0.503
            soapbox_2   0.015   0.331
            soapbox_3   0.902   0.973
 
-Total time:0.006302833557128906Done with: ../davis2017eval/sam2_preds_Naive_0.05_gray
+Total time:0.0063915252685546875Done with: ../davis2017eval/sam2_preds_Naive_0.05_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_0.07_gray
 ========================
@@ -736,7 +810,7 @@ paragliding-launch_3   0.176   0.503
            soapbox_2   0.015   0.332
            soapbox_3   0.901   0.973
 
-Total time:0.007107973098754883Done with: ../davis2017eval/sam2_preds_Naive_0.07_gray
+Total time:0.006518840789794922Done with: ../davis2017eval/sam2_preds_Naive_0.07_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_0.10_gray
 ========================
@@ -810,7 +884,7 @@ paragliding-launch_3   0.170   0.510
            soapbox_2   0.016   0.331
            soapbox_3   0.898   0.972
 
-Total time:0.008157968521118164Done with: ../davis2017eval/sam2_preds_Naive_0.10_gray
+Total time:0.006197690963745117Done with: ../davis2017eval/sam2_preds_Naive_0.10_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_0.15_gray
 ========================
@@ -884,7 +958,7 @@ paragliding-launch_3   0.128   0.452
            soapbox_2   0.019   0.336
            soapbox_3   0.878   0.967
 
-Total time:0.006453514099121094Done with: ../davis2017eval/sam2_preds_Naive_0.15_gray
+Total time:0.006341695785522461Done with: ../davis2017eval/sam2_preds_Naive_0.15_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.05_gray
 ========================
@@ -958,7 +1032,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.006317138671875Done with: ../davis2017eval/sam2_preds_Naive_OF_0.05_gray
+Total time:0.0062711238861083984Done with: ../davis2017eval/sam2_preds_Naive_OF_0.05_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.07_gray
 ========================
@@ -1032,7 +1106,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.006937265396118164Done with: ../davis2017eval/sam2_preds_Naive_OF_0.07_gray
+Total time:0.006267547607421875Done with: ../davis2017eval/sam2_preds_Naive_OF_0.07_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.10_gray
 ========================
@@ -1106,7 +1180,7 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.010185956954956055Done with: ../davis2017eval/sam2_preds_Naive_OF_0.10_gray
+Total time:0.006402254104614258Done with: ../davis2017eval/sam2_preds_Naive_OF_0.10_gray
 
 Evaluating: ../davis2017eval/sam2_preds_Naive_OF_0.15_gray
 ========================
@@ -1180,5 +1254,5 @@ paragliding-launch_3   0.012   0.216
            soapbox_2   0.041   0.134
            soapbox_3   0.067   0.228
 
-Total time:0.006386280059814453Done with: ../davis2017eval/sam2_preds_Naive_OF_0.15_gray
+Total time:0.006315469741821289Done with: ../davis2017eval/sam2_preds_Naive_OF_0.15_gray
 
