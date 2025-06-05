@@ -10,7 +10,7 @@ from sam2.utils.change_detection import SKIP_MAD_THRESHOLD
 DAVIS_ROOT = os.path.join(os.path.dirname(__file__), "datasets", "DAVIS", "DAVIS2017", "DAVIS")
 
 # Directory where predictions will be saved
-OUT_ROOT = os.path.join(os.path.dirname(__file__), "predictions", "DAVIS2017")
+OUT_ROOT = os.path.join(os.path.dirname(__file__), "predictions", "DAVIS2017_optical")
 os.makedirs(OUT_ROOT, exist_ok=True)
 
 # Initialize the predictor once
